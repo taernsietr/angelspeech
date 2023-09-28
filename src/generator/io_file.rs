@@ -1,20 +1,16 @@
-use std::path::Path;
+use std::path::PathBuf;
 
 use crate::generator::text_generator::TextGenerator;
 
 impl TextGenerator {
 
     // TODO: Refactor this entire function, this is somewhat disgusting
-    pub fn load_local(file: &str, directory_root: &str) -> TextGenerator {
-        let file_location = Path::new(&directory_root)
-            .join("/settings/")
-            .join(file)
-            .join(".json");
+    pub fn load_local(file: PathBuf) -> TextGenerator {
 
-        let data = std::fs::read_to_string(&file_location).expect("Failed to load generator settings file");
+        let data = std::fs::read_to_string(&file).expect("Failed to load generator settings file");
         
         let generator: TextGenerator = serde_json::from_str::<TextGenerator>(&data)
-            .unwrap_or_else(|_| panic!("Failed to read JSON data in {}", &file_location.to_str().unwrap()));
+            .unwrap_or_else(|_| panic!("Failed to read JSON data in {}", &file.to_str().unwrap()));
         
         /*
          * Error checking:
@@ -46,12 +42,8 @@ impl TextGenerator {
         else { panic!("Mismatch between number of defined and used pattern symbols"); }
     }
    
-    pub fn save_local(&self, directory_root: &str) {
-        let mut save_location = Path::new(&directory_root)
-            .join("/settings/")
-            .join(self.get_name())
-            .join(".json");
-
-        std::fs::write(save_location, self.as_json()).unwrap();
+    pub fn save_local(&self, settings_folder: PathBuf) {
+        let file = settings_folder.join(&self.name);
+        std::fs::write(file, self.as_json()).unwrap();
     }
 }

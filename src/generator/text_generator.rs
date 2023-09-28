@@ -6,7 +6,7 @@ use rand::prelude::SliceRandom;
 
 use crate::generator::pattern::{Pattern, PatternPosition};
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct TextGenerator {
     pub name: String,
     pub categories: HashMap<String,Vec<String>>, 

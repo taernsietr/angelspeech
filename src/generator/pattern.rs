@@ -2,7 +2,7 @@ use std::str::FromStr;
 use rand::{Rng, distributions::{Distribution, Standard}};
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Clone, Copy, PartialEq, Eq)]
+#[derive(Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
 pub enum PatternPosition {
     Any,
     Initial,
@@ -13,14 +13,14 @@ pub enum PatternPosition {
     NonFinal,
 }
 
-#[derive(Deserialize, Serialize, Clone, Copy)]
+#[derive(Deserialize, Serialize, Clone, Copy, Debug)]
 pub enum PatternWeight {
     Default,
     Light,
     Heavy,
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Pattern {
     pattern: String,
     position: PatternPosition,

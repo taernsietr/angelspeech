@@ -1,4 +1,4 @@
-mod pattern;
-mod random_generators;
-mod text_generator;
-mod io_file;
+pub mod pattern;
+pub mod random_generators;
+pub mod text_generator;
+pub mod io_file;

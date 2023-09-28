@@ -14,7 +14,7 @@ impl TextGenerator {
 
     // Optionally take parameters such as consonant/vowel ratio, inventory size, etc
     // This has to be rewritten more adequately
-    pub fn new_random_generator() -> TextGenerator {
+    pub fn random() -> TextGenerator {
         let mut rng = rand::thread_rng();
 
         let ratio: f32 = rng.gen_range(0.2..=1.0);
