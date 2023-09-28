@@ -1,0 +1,1 @@
+{"name":"kai","categories":{"C":["p","t","k","b","d","g","s","h","w","y","m","n"],"V":["i","e","o","a","u","ö","ü"],"F":["s","h","n"]},"patterns":[{"pattern":"CV","position":"Any","weight":"Default"},{"pattern":"CVF","position":"Any","weight":"Default"}]}
