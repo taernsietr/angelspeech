@@ -43,7 +43,8 @@ impl TextGenerator {
     }
    
     pub fn save_local(&self, settings_folder: PathBuf) {
-        let file = settings_folder.join(&self.name);
+        let mut file = settings_folder.join(&self.name);
+        file.set_extension("json");
         std::fs::write(file, self.as_json()).unwrap();
     }
 }
