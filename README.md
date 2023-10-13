@@ -1,7 +1,7 @@
 # Angelspeech
 
 This is a Rust library originally created to power the
-[https://github.com/taernsietr/language_generator](language_generator) project.
+(https://github.com/taernsietr/language_generator)[language_generator] project.
 The code here was previously contained within that repo, but I separated them
 for better modularity and maintainability.  
 
