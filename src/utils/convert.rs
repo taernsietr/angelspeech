@@ -15,7 +15,12 @@ pub fn xsampa_to_ipa(input: String) -> String {
     let mut regexes = Vec::<(Regex, String)>::new();
     
     for (left, right) in CONVERSION_TABLE.iter() {
-        regexes.push((Regex::new(escape_regex(left).as_str()).unwrap(), right.to_string()));
+        regexes.push(
+            (
+                Regex::new(escape_regex(left).as_str()).unwrap(),
+                right.to_string()
+            )
+        );
     }
 
     for each in regexes {
