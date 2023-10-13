@@ -1,1 +1,0 @@
-{"name":"karta","categories":{"C":["p","t","k","m","n","s","h"],"V":["i","a","u","ii","aa","uu"],"W":["y","w"],"F":["n","ng"]},"patterns":[{"pattern":"CV","position":"Any","weight":"Default"},{"pattern":"CWV","position":"Any","weight":"Default"},{"pattern":"CVF","position":"Any","weight":"Default"}]}
