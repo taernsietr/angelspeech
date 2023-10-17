@@ -1,4 +1,3 @@
-use std::fs;
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -58,48 +57,5 @@ enum PhonologicalTraits {
     Velar,
     Velarized,
     Voiced,
-}
-
-#[derive(Deserialize)]
-enum SyllablePosition {
-    WordInitial,
-    WordFinal,
-    WordMedial,
-}
-
-#[derive(Deserialize)]
-struct Phone {
-    id: String,
-    ipa: String,
-    xsampa: String,
-    traits: Vec<PhonologicalTraits>, 
-}
-
-#[derive(Deserialize)]
-struct Phoneme {
-    id: String,
-    canonical_realization: Vec<Phone>,
-    allophonic_realizations: Option(Vec<(Phone, String)>, None),
-}
-
-#[derive(Deserialize)]
-struct SyllabicPattern {
-    id: String,
-    form: Vec<Phoneme>,
-    environment: Vec<SyllablePosition>,
-    weight: u8,
-}
-
-#[derive(Deserialize)]
-pub struct Phonology {
-    name: String,
-    phonemes: Vec<Phoneme>,
-    syllabic_patterns: Vec<SyllabicPattern>,
-}
-
-#[derive(Deserialize)]
-pub struct Language {
-    phonology: Phonology,
-    grammar: Grammar,
 }
 
