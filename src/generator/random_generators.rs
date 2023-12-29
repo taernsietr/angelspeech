@@ -30,8 +30,8 @@ impl TextGenerator {
             .choose_multiple(&mut rng, (size as f32 / (ratio + 1.0)).round() as usize)
             .map(|x| x.to_owned().to_string()).collect::<Vec<String>>();
 
-        let no_consonant_cats = rng.gen_range(1..=(consonants.len() as f32 / 2.0).round() as usize);
-        let no_vowel_cats = rng.gen_range(1..=(vowels.len() as f32 / 2.0).round() as usize);
+        let no_consonant_cats = rng.gen_range(1..=(consonants.len() as f32 / 3.0).round() as usize);
+        let no_vowel_cats = rng.gen_range(1..=(vowels.len() as f32 / 3.0).round() as usize);
         let no_pats = rng.gen_range(1..5);
 
         let mut categories = HashMap::<String, Vec<String>>::new(); 
@@ -43,7 +43,7 @@ impl TextGenerator {
                 i.to_string(),
                 consonants
                     .choose_multiple(&mut rng, category_size)
-                    .map(|x| x.to_string())
+                    .map(String::from)
                     .collect::<Vec<String>>()
             );
         }
@@ -54,7 +54,7 @@ impl TextGenerator {
                 j.to_string(),
                 vowels
                     .choose_multiple(&mut rng, category_size)
-                    .map(|x| x.to_string())
+                    .map(String::from)
                     .collect::<Vec<String>>()
             );
         }
@@ -68,7 +68,7 @@ impl TextGenerator {
                         .into_keys()
                         .choose_multiple(&mut rng, pattern_size)
                         .iter()
-                        .map(|x| x.to_string())
+                        .map(String::from)
                         .collect::<String>(),
                     "any".to_string(),
                     "default".to_string()

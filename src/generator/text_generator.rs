@@ -9,13 +9,12 @@ use crate::generator::pattern::{Pattern, PatternPosition};
 #[derive(Deserialize, Serialize, Debug)]
 pub struct TextGenerator {
     pub name: String,
-    pub categories: HashMap<String,Vec<String>>, 
+    pub categories: HashMap<String,Vec<String>>,
     pub patterns: Vec<Pattern>,
 }
 
 #[allow(dead_code)]
 impl TextGenerator {
-
     pub fn get_name(&self) -> String { self.name.clone() }
     pub fn as_json(&self) -> String { serde_json::to_string(&self).unwrap() }
 
@@ -172,8 +171,8 @@ impl TextGenerator {
                     (_, _) => unreachable!()
                 }
             );
-            if rng.gen_bool((i as f64 % 8.0) / 8.0) { pseudotext.push_str(vec!(", ", ". ", "? ", "! ").choose(&mut rng).unwrap()) }
-            else { pseudotext.push_str(" ") };
+            if rng.gen_bool((i as f64 % 8.0) / 8.0) { pseudotext.push_str([", ", ". ", "? ", "! "].choose(&mut rng).unwrap()) }
+            else { pseudotext.push(' ') };
         };
         pseudotext
     }
