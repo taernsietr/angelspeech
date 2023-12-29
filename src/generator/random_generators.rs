@@ -7,8 +7,10 @@ use crate::generator::{
     pattern::Pattern
 };
 
-const CONSONANTS: [&str; 63] = ["p", "b", "t", "d", "t`", "d`", "c", r"J\\", "k", "g", "q", r"G\\", "?", "m", "F", "n", "n`", "J", "N", r"N\\", r"B\\", "r", r"R\\", "4", "r`", r"p\\", "B", "f", "v", "T", "D", "s", "z", "S", "Z", "s`", "z`", "C", r"j\\", "x", "G", "X", "R", r"X\\", r"?\\", r"h\\", "K", r"K\\", r"v\\", r"r\\", "r\\`", "j", r"M\\", "l", "l`", "L", r"L\\", "W", "w", "H", r"s\\", r"z\\", r"x\\"];
-const VOWELS: [&str; 34] = ["i", "y", "1", "}", "M", "u", "I", "Y", r"I\\", r"U\\", "U", "e", "2", r"@\\", "8", "7", "o", "e_o", "2_o", "@", "o_o", "E", "9", "3", r"3\\", "V", "O", "{", "6", "a", "&", "a_", "A", "Q"];
+use crate::resources::ipa::{
+    PULMONIC_CONSONANTS,
+    VOWELS
+};
 
 impl TextGenerator {
 
@@ -20,7 +22,7 @@ impl TextGenerator {
         let ratio: f32 = rng.gen_range(0.2..=1.0);
         let size: u8 = rng.gen_range(5..=30);
 
-        let consonants = CONSONANTS
+        let consonants = PULMONIC_CONSONANTS
             .choose_multiple(&mut rng, ((ratio * size as f32) / (ratio + 1.0)).round() as usize)
             .map(|x| x.to_owned().to_string()).collect::<Vec<String>>();
 
@@ -75,6 +77,6 @@ impl TextGenerator {
         }
 
         let temp = TextGenerator::new("temp".to_string(), categories.clone(), patterns.clone());
-        TextGenerator::new(temp.random_length_word(1, 4), categories, patterns)
+        TextGenerator::new(temp.random_length_word(1, 4, 0.0), categories, patterns)
     }
 }

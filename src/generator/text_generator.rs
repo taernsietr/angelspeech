@@ -36,15 +36,33 @@ impl TextGenerator {
         }
     }
 
-    pub fn random_length_word(&self, min_syllables: u8, max_syllables: u8) -> String {
+    pub fn random_length_word(&self, min_syllables: u8, max_syllables: u8, bias: f32) -> String {
         let mut rng = rand::thread_rng();
 
         let word_length = match min_syllables.cmp(&max_syllables) {
-            Ordering::Less => { rng.gen_range({if min_syllables > 0 { min_syllables } else { 1 }}..=max_syllables) },
-            Ordering::Equal => { if min_syllables > 0 { min_syllables } else { 1 } },
-            Ordering::Greater => { println!("[TextGenerator] Warning: Minimum syllables has to be equal to or less than maximum syllables. Defaulting to the minimum given value ({})", &min_syllables); min_syllables },
-        };
+            Ordering::Less => {
 
+                // used logic from https://stackoverflow.com/questions/29325069/how-to-generate-random-numbers-biased-towards-one-value-in-a-range
+                let mut bias_t = (max_syllables - min_syllables) / 2;
+                if bias > 0.0 { bias_t = max_syllables };
+                if bias < 0.0 { bias_t = min_syllables };
+                let mix = bias.abs() * rng.gen::<f32>();
+
+                (rng.gen_range({
+                    if min_syllables > 0 { min_syllables }
+                    else { 1 }
+                }..=max_syllables) as f32 * (1.0 - mix) + bias_t as f32 * mix) as u8
+            },
+            Ordering::Equal => {
+                println!("[Angelspeech] Warning: Minimum syllable value has to be greater than zero. Defaulting to 1.");
+                if min_syllables > 0 { min_syllables } else { 1 }
+            },
+            Ordering::Greater => {
+                println!("[Angelspeech] Warning: Minimum syllable value has to be equal to or less than maximum syllables. Defaulting to the minimum given value ({}).",
+                &min_syllables);
+                min_syllables
+            },
+        };
         self.random_word(word_length)
     }
 
@@ -117,9 +135,9 @@ impl TextGenerator {
         word.concat()
     }
 
-    pub fn random_text(&self, min_syllables: u8, max_syllables: u8, text_size: u8) -> String {
+    pub fn random_text(&self, min_syllables: u8, max_syllables: u8, bias: f32, text_size: u8) -> String {
         let text_size = if text_size < 1 {
-            println!("[TextGenerator] Warning: text size must be at least 1. Defaulting to 1.");
+            println!("[Angelspeech] Warning: text size must be at least 1. Defaulting to 1.");
             1
         }
         else { text_size };
@@ -127,17 +145,17 @@ impl TextGenerator {
         let mut text = Vec::<String>::new();
 
         for _ in 0..text_size {
-            text.push(self.random_length_word(min_syllables, max_syllables));
+            text.push(self.random_length_word(min_syllables, max_syllables, bias));
         }
         text.join(" ")
     }
 
     // TODO: configurable pseudotext, ie "command" gives a certain pattern of output different than
     // "wikipedia article"
-    pub fn pseudotext(&self, min_syllables: u8, max_syllables: u8, text_size: u8) -> String {
+    pub fn pseudotext(&self, min_syllables: u8, max_syllables: u8, bias: f32, text_size: u8) -> String {
         let mut rng = rand::thread_rng();
         let mut pseudotext = String::new();
-        let roots: Vec<String> = (0..Ord::min(text_size/2, 12)).map(|_| self.random_length_word(min_syllables, max_syllables)).collect();
+        let roots: Vec<String> = (0..Ord::min(text_size/2, 12)).map(|_| self.random_length_word(min_syllables, max_syllables, bias)).collect();
         let particles: Vec<String> = (0..Ord::min(text_size, 10)).map(|_| self.random_word(Ord::min(min_syllables, 2))).collect();
       //let morpheme: Vec<String> = (0..Ord::max(length, 12)).map(|_| self.random_word(1)).collect();
 
