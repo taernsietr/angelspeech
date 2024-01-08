@@ -12,6 +12,8 @@ use crate::resources::ipa::{
     VOWELS
 };
 
+use super::simple_rules::Rule;
+
 impl TextGenerator {
 
     // Optionally take parameters such as consonant/vowel ratio, inventory size, etc
@@ -76,7 +78,7 @@ impl TextGenerator {
             );
         }
 
-        let temp = TextGenerator::new("temp".to_string(), categories.clone(), patterns.clone());
-        TextGenerator::new(temp.random_length_word(1, 4, 0.0), categories, patterns)
+        let temp = TextGenerator::new("temp".to_string(), categories.clone(), patterns.clone(), Vec::<Rule>::new());
+        TextGenerator::new(temp.random_length_word(1, 4, 0.0), categories, patterns, Vec::<Rule>::new())
     }
 }

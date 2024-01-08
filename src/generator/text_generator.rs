@@ -4,13 +4,17 @@ use serde::{Deserialize, Serialize};
 use rand::Rng;
 use rand::prelude::SliceRandom;
 
-use crate::generator::pattern::{Pattern, PatternPosition};
+use crate::generator::{
+    pattern::{Pattern, PatternPosition},
+    simple_rules::Rule
+};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct TextGenerator {
     pub name: String,
     pub categories: HashMap<String,Vec<String>>,
     pub patterns: Vec<Pattern>,
+    pub ruleset: Vec<Rule>
 }
 
 #[allow(dead_code)]
@@ -21,10 +25,11 @@ impl TextGenerator {
     pub fn new<N: Into<String>>(
         name: N,
         categories: HashMap<String,Vec<String>>,
-        patterns: Vec<Pattern>
+        patterns: Vec<Pattern>,
+        ruleset: Vec<Rule>
     ) -> TextGenerator {
 
-        TextGenerator { name: name.into(), categories, patterns }
+        TextGenerator { name: name.into(), categories, patterns, ruleset }
     }
     
     pub fn new_empty(name: String) -> TextGenerator {
@@ -32,6 +37,7 @@ impl TextGenerator {
             name, 
             categories: HashMap::new(),
             patterns: Vec::<Pattern>::new(),
+            ruleset: Vec::<Rule>::new()
         }
     }
 
