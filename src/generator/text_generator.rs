@@ -18,13 +18,13 @@ impl TextGenerator {
     pub fn get_name(&self) -> String { self.name.clone() }
     pub fn as_json(&self) -> String { serde_json::to_string(&self).unwrap() }
 
-    pub fn new(
-        name: String,
+    pub fn new<N: Into<String>>(
+        name: N,
         categories: HashMap<String,Vec<String>>,
         patterns: Vec<Pattern>
     ) -> TextGenerator {
 
-        TextGenerator { name, categories, patterns }
+        TextGenerator { name: name.into(), categories, patterns }
     }
     
     pub fn new_empty(name: String) -> TextGenerator {
@@ -177,3 +177,4 @@ impl TextGenerator {
         pseudotext
     }
 }
+

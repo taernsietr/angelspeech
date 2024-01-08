@@ -90,11 +90,11 @@ impl Pattern {
     pub fn pattern(&self) -> String { self.pattern.clone() }
     pub fn position(&self) -> PatternPosition { self.position }
     pub fn weight(&self) -> PatternWeight { self.weight }
-    pub fn new(pattern: String, position: String, weight: String) -> Pattern {
+    pub fn new<S: Into<String>>(pattern: S, position: S, weight: S) -> Pattern {
         Pattern { 
-            pattern, 
-            position: PatternPosition::from_str(&position).unwrap(), 
-            weight: PatternWeight::from_str(&weight).unwrap(), 
+            pattern: pattern.into(), 
+            position: PatternPosition::from_str(&position.into()).unwrap(), 
+            weight: PatternWeight::from_str(&weight.into()).unwrap(), 
         }
     }
 }
