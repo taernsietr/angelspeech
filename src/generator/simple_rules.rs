@@ -8,10 +8,10 @@ pub struct Rule {
 }
 
 impl Rule {
-    pub fn new(ctx: &str, res: &str) -> Rule {
+    pub fn new<N: Into<String>>(ctx: N, res: N) -> Rule {
         // let context = regex::Regex::new(ctx).unwrap();
-        let context = ctx.to_string();
-        let result = res.to_string();
+        let context = ctx.into();
+        let result = res.into();
         Rule { context, result }
     }
 

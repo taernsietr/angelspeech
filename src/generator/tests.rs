@@ -17,15 +17,18 @@ mod tests {
             ["CV".to_string(), "Any".to_string(), "Default".to_string()],
         ];
 
+        let rules = Rule::new("mp", "mb");
+
         let generator = TextGenerator::new(
             "testing",
             HashMap::<String, Vec<String>>::from(cats),
-            pats.map(|pat| Pattern::new(&pat[0], &pat[1], &pat[2])).to_vec()
+            pats.map(|pat| Pattern::new(&pat[0], &pat[1], &pat[2])).to_vec(),
+            vec!(rules)
         );
     
         assert_eq!(
             &generator.as_json(),
-            "{\"name\":\"testing\",\"categories\":{\"C\":[\"p\",\"t\",\"k\",\"b\",\"d\",\"g\",\"m\",\"n\",\"s\",\"h\"]},\"patterns\":[{\"pattern\":\"CV\",\"position\":\"Any\",\"weight\":\"Default\"}]}"
+            "{\"name\":\"testing\",\"categories\":{\"C\":[\"p\",\"t\",\"k\",\"b\",\"d\",\"g\",\"m\",\"n\",\"s\",\"h\"]},\"patterns\":[{\"pattern\":\"CV\",\"position\":\"Any\",\"weight\":\"Default\"}],\"ruleset\":[{\"context\":\"mp\",\"result\":\"mb\"}]}"
         );
     }
 

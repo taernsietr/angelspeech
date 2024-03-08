@@ -1,21 +1,19 @@
 use std::collections::HashMap;
-use rand::Rng;
-use rand::prelude::{IteratorRandom, SliceRandom};
+use rand::{Rng, prelude::{IteratorRandom, SliceRandom}};
 
-use crate::generator::{
-    text_generator::TextGenerator,
-    pattern::Pattern
+use crate::{
+    generator::{
+        text_generator::TextGenerator,
+        pattern::Pattern,
+        simple_rules::Rule
+    },
+    resources::ipa::{
+        PULMONIC_CONSONANTS,
+        VOWELS
+    }
 };
-
-use crate::resources::ipa::{
-    PULMONIC_CONSONANTS,
-    VOWELS
-};
-
-use super::simple_rules::Rule;
 
 impl TextGenerator {
-
     // Optionally take parameters such as consonant/vowel ratio, inventory size, etc
     // This has to be rewritten more adequately
     pub fn random() -> TextGenerator {

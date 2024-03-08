@@ -49,9 +49,9 @@ impl TextGenerator {
         TextGenerator { name: name.into(), categories, patterns, ruleset }
     }
     
-    pub fn new_empty(name: String) -> TextGenerator {
+    pub fn new_empty<N: Into<String>>(name: N) -> TextGenerator {
         TextGenerator {
-            name, 
+            name: name.into(), 
             categories: HashMap::new(),
             patterns: Vec::<Pattern>::new(),
             ruleset: Vec::<Rule>::new()
