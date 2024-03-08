@@ -1,13 +1,31 @@
-use std::cmp::Ordering;
-use std::collections::HashMap;
+use std::{collections::HashMap, cmp::Ordering};
 use serde::{Deserialize, Serialize};
-use rand::Rng;
-use rand::prelude::SliceRandom;
+use rand::{Rng, prelude::SliceRandom};
 
 use crate::generator::{
-    pattern::{Pattern, PatternPosition},
+    pattern::Pattern,
     simple_rules::Rule
 };
+/*
+// TODO: move this to a more adequate file
+pub enum WordMoraPattern {
+    Any,
+    Alternating,
+    AlternatingDoubleHeavy,
+    SingleHeavy,
+    DoubleHeavy,
+}
+*/
+
+/* 
+// TODO: Decide if implementing this is worth it
+let weight_filters: Vec<PatternWeight> = match (current_weight, word_mora_pattern) {
+    ("L" || "H", WordMoraPattern::Any) => {},
+    ("L", WordMoraPattern::Alternating) => {},
+    ("H", WordMoraPattern::Alternating) => {},
+
+}
+*/
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct TextGenerator {
@@ -24,11 +42,10 @@ impl TextGenerator {
 
     pub fn new<N: Into<String>>(
         name: N,
-        categories: HashMap<String,Vec<String>>,
+        categories: HashMap<String, Vec<String>>,
         patterns: Vec<Pattern>,
         ruleset: Vec<Rule>
     ) -> TextGenerator {
-
         TextGenerator { name: name.into(), categories, patterns, ruleset }
     }
     
@@ -71,73 +88,44 @@ impl TextGenerator {
         self.random_word(word_length)
     }
 
+    fn select_pattern(&self, index: u8, word_length: u8) -> &Pattern {
+        let mut rng = rand::thread_rng();
+        let positions = Pattern::valid_positions(index, word_length);
+        self.patterns
+            .iter()
+            .filter(|x| positions.contains(&x.position()))
+            .collect::<Vec<&Pattern>>()
+            .choose(&mut rng)
+            .unwrap()
+            .to_owned()
+    }
+
     pub fn random_word(&self, word_length: u8) -> String {
         let mut rng = rand::thread_rng();
-        let mut word = Vec::<String>::new();
+        let mut words = Vec::<String>::new();
 
         // Each syllable
-        for index in 1..=word_length {
-        /*  index  = 1     && len  =  1 -> any, non-medial
-            index  = 1     && len >=  2 -> any, initial, non-final
-            index  = len   && len  >  1 -> any, non-initial, final
-        1 < index <= len-1 && len  >  2 -> any, non-final, medial, non-initial */
-            let position_filters: Vec<PatternPosition> = match (index, word_length) {
-                (1, 1) => {                                            vec!(PatternPosition::Any, PatternPosition::NonMedial)},
-                (1, 2..) => {                                          vec!(PatternPosition::Any, PatternPosition::Initial, PatternPosition::NonMedial, PatternPosition::NonFinal)},
-                (index, 2..) if index == word_length => {              vec!(PatternPosition::Any, PatternPosition::NonInitial, PatternPosition::NonMedial, PatternPosition::Final)},
-                (index, 3..) if 1 < index && index < word_length => {  vec!(PatternPosition::Any, PatternPosition::NonFinal, PatternPosition::Medial, PatternPosition::NonInitial)},
-                _ => unreachable!(),
-            };
+        (1..=word_length).for_each(|index| {
+            let pattern = self.select_pattern(index, word_length);
 
-            /*
-            // TODO: move this to a more adequate file
-            pub enum WordMoraPattern {
-                Any,
-                Alternating,
-                AlternatingDoubleHeavy,
-                SingleHeavy,
-                DoubleHeavy,
-            }
-            */
-
-            /* 
-            // TODO: Decide if implementing this is worth it
-            let weight_filters: Vec<PatternWeight> = match (current_weight, word_mora_pattern) {
-                ("L" || "H", WordMoraPattern::Any) => {},
-                ("L", WordMoraPattern::Alternating) => {},
-                ("H", WordMoraPattern::Alternating) => {},
-
-            }
-            */
-            
-            let syllable_pattern = &self.patterns
-                .iter()
-                .filter(|x| position_filters.contains(&x.position()))
-                .collect::<Vec<&Pattern>>()
-                .choose(&mut rng)
-                .unwrap()
-                .to_owned();
-
-            for element in syllable_pattern.pattern().chars() {
+            words.push(pattern.pattern().chars().map(|element| {
                 if element.is_uppercase() || element.is_numeric() { 
-                    word.push(
-                        self.categories
-                            .get(&element.to_string())
-                            .unwrap()
-                            .choose(&mut rng)
-                            .unwrap()
-                            .clone()
-                    );
+                    self.categories
+                        .get(&element.to_string())
+                        .unwrap()
+                        .choose(&mut rng)
+                        .unwrap()
+                        .clone()
                 }
                 else if element.is_lowercase() { 
-                    word.push(element.to_string());
+                    element.to_string()
                 }
                 else {
                     panic!("Invalid character in syllable pattern: {}", element);
                 }
-            }
-        }
-        word.concat()
+            }).collect());
+        });
+        words.concat()
     }
 
     pub fn random_text(&self, min_syllables: u8, max_syllables: u8, bias: f32, text_size: u8) -> String {
@@ -147,12 +135,9 @@ impl TextGenerator {
         }
         else { text_size };
 
-        let mut text = Vec::<String>::new();
-
-        for _ in 0..text_size {
-            text.push(self.random_length_word(min_syllables, max_syllables, bias));
-        }
-        text.join(" ")
+        (0..text_size).map(|_| { self.random_length_word(min_syllables, max_syllables, bias) })
+            .collect::<Vec<String>>()
+            .join(" ")
     }
 
     // TODO: configurable pseudotext, ie "command" gives a certain pattern of output different than

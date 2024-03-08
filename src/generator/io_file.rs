@@ -3,8 +3,6 @@ use std::path::PathBuf;
 use crate::generator::text_generator::TextGenerator;
 
 impl TextGenerator {
-
-    // TODO: Refactor this entire function, this is somewhat disgusting
     pub fn load_local(file: PathBuf) -> TextGenerator {
         let data = std::fs::read_to_string(&file).expect("Failed to load generator settings file");
         serde_json::from_str::<TextGenerator>(&data)
