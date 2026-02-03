@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::generator::text_generator::TextGenerator;
+use crate::types::TextGenerator;
 
 impl TextGenerator {
     pub fn load_local(file: PathBuf) -> TextGenerator {

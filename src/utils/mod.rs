@@ -1,2 +1,1 @@
-pub mod convert;
-pub mod ipa_query;
+pub(crate) mod convert;

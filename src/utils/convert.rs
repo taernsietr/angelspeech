@@ -1,6 +1,6 @@
 use regex::Regex;
 
-use crate::resources::ipa::CONVERSION_TABLE;
+use crate::generator::random::CONVERSION_TABLE;
 
 #[allow(dead_code)]
 pub fn escape_regex(regex: &str) -> String {

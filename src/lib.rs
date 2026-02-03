@@ -2,5 +2,12 @@
 //! lists and pseudotext, and more advanced options such as 
 //! randomly generated phonologies.
 
-pub mod generator;
-pub mod utils;
+#![allow(dead_code)]
+
+pub(crate) mod generator;
+pub(crate) mod mora;
+pub(crate) mod pattern;
+pub(crate) mod rules;
+pub(crate) mod utils;
+pub(crate) mod types;
+pub(crate) mod common;
