@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use rand::prelude::SliceRandom;
 use crate::types::{Pattern, Rule, TextGenerator};
 
 #[allow(dead_code)]
@@ -23,18 +22,6 @@ impl TextGenerator {
             patterns: Vec::<Pattern>::new(),
             ruleset: Vec::<Rule>::new()
         }
-    }
-
-    pub fn select_pattern(&self, index: u8, word_length: u8) -> &Pattern {
-        let mut rng = rand::thread_rng();
-        let positions = Pattern::valid_positions(index, word_length);
-        self.patterns
-            .iter()
-            .filter(|x| positions.contains(&x.position()))
-            .collect::<Vec<&Pattern>>()
-            .choose(&mut rng)
-            .unwrap()
-            .to_owned()
     }
 }
 

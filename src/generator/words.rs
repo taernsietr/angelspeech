@@ -1,34 +1,36 @@
 use std::cmp::Ordering;
 use rand::{Rng, prelude::SliceRandom};
-use crate::types::TextGenerator;
+use crate::types::{Pattern, TextGenerator};
 
 impl TextGenerator {
+    pub fn select_pattern(&self, index: u8, word_length: u8) -> &Pattern {
+        let mut rng = rand::thread_rng();
+        let positions = Pattern::valid_positions(index, word_length);
+        self.patterns
+            .iter()
+            .filter(|x| positions.contains(&x.position()))
+            .collect::<Vec<&Pattern>>()
+            .choose(&mut rng)
+            .unwrap()
+            .to_owned()
+    }
+
     pub fn random_word(&self, word_length: u8) -> String {
         let mut rng = rand::thread_rng();
-        let mut words = Vec::<String>::new();
-
-        // Each syllable
-        (1..=word_length).for_each(|index| {
-            let pattern = self.select_pattern(index, word_length);
-
-            words.push(pattern.pattern().chars().map(|element| {
-                if element.is_uppercase() || element.is_numeric() { 
-                    self.categories
-                        .get(&element.to_string())
+        (1..=word_length).map(|index| {
+            self.select_pattern(index, word_length).pattern().chars().map(|element| {
+                match element {
+                    c if c.is_uppercase() || c.is_numeric() => self.categories
+                        .get(&c.to_string())
                         .unwrap()
                         .choose(&mut rng)
                         .unwrap()
-                        .clone()
+                        .clone(),
+                    c if c.is_lowercase() => c.to_string(),
+                    _ => panic!("Invalid character in syllable pattern: {}", element)
                 }
-                else if element.is_lowercase() { 
-                    element.to_string()
-                }
-                else {
-                    panic!("Invalid character in syllable pattern: {}", element);
-                }
-            }).collect());
-        });
-        words.concat()
+            }).collect::<String>()
+        }).collect::<Vec<_>>().concat()
     }
 
     pub fn random_length_word(&self, min_syllables: u8, max_syllables: u8, bias: f32) -> String {
