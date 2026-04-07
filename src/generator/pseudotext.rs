@@ -1,36 +1,24 @@
 use rand::{Rng, prelude::SliceRandom};
-use crate::types::TextGenerator;
+use crate::types::{TextGenerator, TextParams};
 
 impl TextGenerator {
-    pub fn random_text(
-        &self,
-        min_syllables: u8,
-        max_syllables: u8,
-        bias: f32,
-        text_size: u8
-    ) -> String {
-        let text_size = if text_size < 1 {
-            println!("[Angelspeech] Warning: text size must be at least 1. Defaulting to 1.");
-            1
-        }
-        else { text_size };
-
-        (0..text_size).map(|_| { self.random_length_word(min_syllables, max_syllables, bias) })
+    pub fn random_text(&self, params: &TextParams) -> String {
+        (0..params.text_size).map(|_| { self.rlword(params) })
             .collect::<Vec<String>>()
             .join(" ")
     }
 
     // TODO: configurable pseudotext, ie "command" gives a certain pattern of output different than
     // "wikipedia article"
-    pub fn pseudotext(&self, min_syllables: u8, max_syllables: u8, bias: f32, text_size: u8) -> String {
+    pub fn pseudotext(&self, params: &TextParams) -> String {
         let mut rng = rand::thread_rng();
         let mut pseudotext = String::new();
-        let roots: Vec<String> = (0..Ord::min(text_size/2, 12)).map(|_| self.random_length_word(min_syllables, max_syllables, bias)).collect();
-        let particles: Vec<String> = (0..Ord::min(text_size, 10)).map(|_| self.random_word(Ord::min(min_syllables, 2))).collect();
+        let roots: Vec<String> = (0..Ord::min(params.text_size/2, 12)).map(|_| self.rlword(params)).collect();
+        let particles: Vec<String> = (0..Ord::min(params.text_size, 10)).map(|_| self.rword(Ord::min(params.min_syllables, 2))).collect();
       //let morpheme: Vec<String> = (0..Ord::max(length, 12)).map(|_| self.random_word(1)).collect();
 
         let mut last_type = "none"; 
-        for i in 0..=text_size {
+        for i in 0..=params.text_size {
             let state = rng.gen_range(0..2);
             pseudotext.push_str(
                 match (last_type, state) {

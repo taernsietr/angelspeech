@@ -40,3 +40,9 @@ pub struct Pattern {
     pub weight: PatternWeight,
 }
 
+pub struct TextParams {
+    pub min_syllables: u8, 
+    pub max_syllables: u8, 
+    pub bias: f32, 
+    pub text_size: u8
+}

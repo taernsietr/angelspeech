@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use rand::{Rng, prelude::{IteratorRandom, SliceRandom}};
 
-use crate::types::{TextGenerator,Pattern, Rule};
+use crate::types::{TextGenerator,Pattern, Rule, TextParams};
 
 // pub const CONSONANTS: [&str; 63] = ["p", "b", "t", "d", "t`", "d`", "c", r"J\\", "k", "g", "q", r"G\\", "?", "m", "F", "n", "n`", "J", "N", r"N\\", r"B\\", "r", r"R\\", "4", "r`", r"p\\", "B", "f", "v", "T", "D", "s", "z", "S", "Z", "s`", "z`", "C", r"j\\", "x", "G", "X", "R", r"X\\", r"?\\", r"h\\", "K", r"K\\", r"v\\", r"r\\", "r\\`", "j", r"M\\", "l", "l`", "L", r"L\\", "W", "w", "H", r"s\\", r"z\\", r"x\\"];
 // pub const VOWELS: [&str; 34] = ["i", "y", "1", "}", "M", "u", "I", "Y", r"I\\", r"U\\", "U", "e", "2", r"@\\", "8", "7", "o", "e_o", "2_o", "@", "o_o", "E", "9", "3", r"3\\", "V", "O", "{", "6", "a", "&", "a_", "A", "Q"];
@@ -78,7 +78,10 @@ impl TextGenerator {
             );
         }
 
-        let temp = TextGenerator::new("temp".to_string(), categories.clone(), patterns.clone(), Vec::<Rule>::new());
-        TextGenerator::new(temp.random_length_word(1, 4, 0.0), categories, patterns, Vec::<Rule>::new())
+        let mut temp = TextGenerator::new("temp".to_string(), categories.clone(), patterns.clone(), Vec::<Rule>::new());
+        let params = TextParams::new(1, 4, 0.0, 1);
+        let name = temp.rlword(&params);
+        temp.set_name(name);
+        temp
     }
 }

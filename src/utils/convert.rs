@@ -2,7 +2,7 @@ use regex::Regex;
 
 use crate::generator::random::CONVERSION_TABLE;
 
-#[allow(dead_code)]
+// TODO! rewrite
 pub fn escape_regex(regex: &str) -> String {
     let re = Regex::new(r"([\\/\{\}\[\]\(\)\.\*\?])").unwrap();
     re.replace_all(regex, r"\$1").to_string()
@@ -10,6 +10,7 @@ pub fn escape_regex(regex: &str) -> String {
 
 // Still compiles regex on every call
 // .iter() returns elements in arbitrary order
+// TODO! rewrite
 pub fn xsampa_to_ipa(input: String) -> String {
     let mut result = input.clone();
     let mut regexes = Vec::<(Regex, String)>::new();
@@ -30,6 +31,7 @@ pub fn xsampa_to_ipa(input: String) -> String {
     result
 }
 
+// TODO! rewrite
 pub fn ipa_to_xsampa(input: String) -> String {
     let mut result = String::new();
 

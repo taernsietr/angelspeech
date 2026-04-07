@@ -1,7 +1,10 @@
 use std::str::FromStr;
-use crate::types::{Pattern,PatternPosition,PatternWeight};
+use crate::types::{
+    Pattern,
+    PatternPosition,
+    PatternWeight
+};
 
-#[allow(dead_code)]
 impl Pattern {
     pub fn pattern(&self) -> String { self.pattern.clone() }
     pub fn position(&self) -> PatternPosition { self.position }

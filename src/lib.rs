@@ -12,8 +12,9 @@ pub(crate) mod utils;
 pub(crate) mod types;
 pub(crate) mod common;
 pub(crate) mod traits;
+pub(crate) mod params;
 
 pub mod prelude {
-    pub use crate::types::TextGenerator;
+    pub use crate::types::{TextParams, TextGenerator};
     pub use crate::traits::IntoTextGenerator;
 }
