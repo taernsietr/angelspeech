@@ -1,13 +1,16 @@
-use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct TextGenerator {
     pub name: String,
-    pub categories: HashMap<String,Vec<String>>,
+    pub categories: Categories,
     pub patterns: Vec<Pattern>,
     pub ruleset: Vec<Rule>
-}
+} 
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Categories(pub HashMap<String, Vec<String>>);
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Rule {
@@ -44,5 +47,16 @@ pub struct TextParams {
     pub min_syllables: u8, 
     pub max_syllables: u8, 
     pub bias: f32, 
-    pub text_size: u8
+    pub text_size: u8,
+    pub text_type: TextType
 }
+
+#[derive(Deserialize, Clone)]
+pub enum TextType {
+    GenericWord,
+    GenericPseudotext
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct TextTypeParseError;
+

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use anyhow::Result;
 use thiserror::Error;
-use crate::types::{Pattern, Rule, TextGenerator};
+use crate::types::{Pattern, Rule, Categories, TextGenerator};
 
 #[derive(Error, Debug)]
 pub enum TextGeneratorError {
@@ -26,14 +26,14 @@ impl TextGenerator {
         patterns: Vec<Pattern>,
         ruleset: Vec<Rule>
     ) -> TextGenerator {
-        TextGenerator { name: name.into(), categories, patterns, ruleset }
+        TextGenerator { name: name.into(), categories: Categories(categories), patterns, ruleset }
     }
     
     /// Creates an empty generator setting
     pub fn empty<N: Into<String>>(name: N) -> TextGenerator {
         TextGenerator {
             name: name.into(), 
-            categories: HashMap::new(),
+            categories: Categories(HashMap::new()),
             patterns: Vec::<Pattern>::new(),
             ruleset: Vec::<Rule>::new()
         }

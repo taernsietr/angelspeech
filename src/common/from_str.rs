@@ -1,11 +1,15 @@
 use std::str::FromStr;
-use crate::types::{PatternWeight,PatternPosition};
+use crate::types::{
+    PatternWeight,
+    PatternPosition,
+    TextType,
+    TextTypeParseError
+};
 
 impl FromStr for PatternPosition {
     type Err = ();
 
     fn from_str(input: &str) -> Result<PatternPosition, Self::Err> {
-
         match input.to_uppercase().as_ref() {
             "ANY" => Ok(PatternPosition::Any),
             "INITIAL" => Ok(PatternPosition::Initial),
@@ -23,12 +27,23 @@ impl FromStr for PatternWeight {
     type Err = ();
 
     fn from_str(input: &str) -> Result<PatternWeight, Self::Err> {
-
-        match input {
+        match input.to_uppercase().as_ref() {
             "DEFAULT" => Ok(PatternWeight::Default),
             "LIGHT" => Ok(PatternWeight::Light),
             "HEAVY" => Ok(PatternWeight::Heavy),
             _ => Ok(PatternWeight::Default),
+        }
+    }
+}
+
+impl FromStr for TextType {
+    type Err = TextTypeParseError;
+
+    fn from_str(input: &str) -> Result<TextType, TextTypeParseError> {
+        match input.to_uppercase().as_ref() {
+            "GENERICWORD" => Ok(TextType::GenericWord),
+            "GENERICPSEUDOTEXT" => Ok(TextType::GenericPseudotext),
+            _ => Err(TextTypeParseError)
         }
     }
 }

@@ -1,4 +1,4 @@
-use rand::prelude::SliceRandom;
+use rand::{Rng, prelude::SliceRandom};
 use crate::types::{Pattern, TextParams, TextGenerator};
 
 impl TextGenerator {
@@ -14,8 +14,9 @@ impl TextGenerator {
             .to_owned()
     }
 
+    // TODO: rewrite aligning the syllable patterns first; should be easier to apply phonetic rules
     /// Generates a random word with a specific syllable count
-    pub fn rword(&self, syllables: u8) -> String {
+    pub fn word(&self, syllables: u8) -> String {
         let mut rng = rand::thread_rng();
 
         (1..=syllables).map(|index| {
@@ -34,10 +35,41 @@ impl TextGenerator {
         }).collect::<Vec<_>>().concat()
     }
 
-    /// Generates a word with a random number os syllables based on the given TextParams
-    pub fn rlword(&self, params: &TextParams) -> String {
+    /// Generates text with a fixed size, where words have a semirandom 
+    /// number of syllables based on the given TextParams
+    pub fn text(&self, params: &TextParams) -> String {
+        std::iter::repeat_with(|| { self.word(params.syllables()) })
+            .take(params.text_size.into())
+            .collect::<Vec<String>>()
+            .join(" ")
+    }
+
+    // TODO: configurable pseudotext
+    /// Generates text with some recognizable structure, for simulating real text with generated
+    /// words
+    pub fn pseudotext(&self, params: &TextParams) -> String {
         let mut rng = rand::thread_rng();
-        let syllables = params.syllables(&mut rng);
-        self.rword(syllables)
+        let mut pseudotext = String::new();
+        let roots: Vec<String> = (0..Ord::min(params.text_size/2, 12)).map(|_| self.text(params)).collect();
+        let particles: Vec<String> = (0..Ord::min(params.text_size, 10)).map(|_| self.word(Ord::min(params.min_syllables, 2))).collect();
+      //let morpheme: Vec<String> = (0..Ord::max(length, 12)).map(|_| self.random_word(1)).collect();
+
+        let mut last_type = "none"; 
+        for i in 0..=params.text_size {
+            let state = rng.gen_range(0..2);
+            pseudotext.push_str(
+                match (last_type, state) {
+                    ("none", _) => { last_type = "root"; roots.choose(&mut rng).unwrap() },
+                    ("root", _) => { last_type = "part"; particles.choose(&mut rng).unwrap() },
+                  //("none", 1) => { last_type = "root"; roots.choose(&mut rng).unwrap().clone() (morpheme.choose(&mut rng).unwrap()) },
+                    ("part", 0) => { last_type = "root"; roots.choose(&mut rng).unwrap() },
+                    ("part", 1) => { last_type = "part"; particles.choose(&mut rng).unwrap() },
+                    (_, _) => unreachable!()
+                }
+            );
+            if rng.gen_bool((i as f64 % 8.0) / 8.0) { pseudotext.push_str([", ", ". ", "? ", "! "].choose(&mut rng).unwrap()) }
+            else { pseudotext.push(' ') };
+        };
+        pseudotext
     }
 }
