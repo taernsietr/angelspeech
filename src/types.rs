@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use sqlx::Type;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -18,7 +19,7 @@ pub struct Rule {
     pub result: String
 }
 
-#[derive(Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Type, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
 pub enum PatternPosition {
     Any,
     Initial,
@@ -29,7 +30,7 @@ pub enum PatternPosition {
     NonFinal,
 }
 
-#[derive(Deserialize, Serialize, Clone, Copy, Debug)]
+#[derive(Type, Deserialize, Serialize, Clone, Copy, Debug)]
 pub enum PatternWeight {
     Default,
     Light,
@@ -51,7 +52,7 @@ pub struct TextParams {
     pub text_type: TextType
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(Type, Deserialize, Clone)]
 pub enum TextType {
     GenericWord,
     GenericPseudotext
