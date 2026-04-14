@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use anyhow::Result;
 use thiserror::Error;
-use crate::types::{Pattern, Rule, Categories, TextGenerator};
+use crate::types::*;
 
 #[derive(Error, Debug)]
 pub enum TextGeneratorError {
@@ -26,7 +26,11 @@ impl TextGenerator {
         patterns: Vec<Pattern>,
         ruleset: Vec<Rule>
     ) -> TextGenerator {
-        TextGenerator { name: name.into(), categories: Categories(categories), patterns, ruleset }
+        TextGenerator {
+            name: name.into(),
+            categories: Categories(categories),
+            patterns: Patterns(patterns),
+            ruleset: Ruleset(ruleset) }
     }
     
     /// Creates an empty generator setting
@@ -34,8 +38,8 @@ impl TextGenerator {
         TextGenerator {
             name: name.into(), 
             categories: Categories(HashMap::new()),
-            patterns: Vec::<Pattern>::new(),
-            ruleset: Vec::<Rule>::new()
+            patterns: Patterns(Vec::<Pattern>::new()),
+            ruleset: Ruleset(Vec::<Rule>::new())
         }
     }
 
