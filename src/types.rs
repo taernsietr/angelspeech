@@ -1,8 +1,7 @@
 use std::collections::HashMap;
-use sqlx::Type;
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(sqlx::FromRow, Deserialize, Serialize, Debug)]
 pub struct TextGenerator {
     pub name: String,
     pub categories: Categories,
@@ -10,16 +9,16 @@ pub struct TextGenerator {
     pub ruleset: Vec<Rule>
 } 
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(sqlx::Type, Debug, Clone, Serialize, Deserialize)]
 pub struct Categories(pub HashMap<String, Vec<String>>);
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(sqlx::Type, Deserialize, Serialize, Debug)]
 pub struct Rule {
     pub context: String,
     pub result: String
 }
 
-#[derive(Type, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(sqlx::Type, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
 pub enum PatternPosition {
     Any,
     Initial,
@@ -30,20 +29,21 @@ pub enum PatternPosition {
     NonFinal,
 }
 
-#[derive(Type, Deserialize, Serialize, Clone, Copy, Debug)]
+#[derive(sqlx::Type, Deserialize, Serialize, Clone, Copy, Debug)]
 pub enum PatternWeight {
     Default,
     Light,
     Heavy,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug)]
+#[derive(sqlx::Type, Deserialize, Serialize, Clone, Debug)]
 pub struct Pattern {
     pub pattern: String,
     pub position: PatternPosition,
     pub weight: PatternWeight,
 }
 
+#[derive(sqlx::FromRow)]
 pub struct TextParams {
     pub min_syllables: u8, 
     pub max_syllables: u8, 
@@ -52,7 +52,7 @@ pub struct TextParams {
     pub text_type: TextType
 }
 
-#[derive(Type, Deserialize, Clone)]
+#[derive(sqlx::Type, Deserialize, Clone)]
 pub enum TextType {
     GenericWord,
     GenericPseudotext
