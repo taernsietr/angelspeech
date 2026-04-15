@@ -20,17 +20,17 @@ impl TextGenerator {
     pub fn set_name<S: Into<String>>(&mut self, name: S) { self.name = name.into() }
 
     /// Creates a new generator setting
-    pub fn new<N: Into<String>>(
-        name: N,
-        categories: HashMap<String, Vec<String>>,
-        patterns: Vec<Pattern>,
-        ruleset: Vec<Rule>
+    pub fn new(
+        name: impl Into<String>,
+        categories: impl Into<Categories>,
+        patterns: impl Into<Patterns>,
+        ruleset: impl Into<Ruleset>
     ) -> TextGenerator {
         TextGenerator {
             name: name.into(),
-            categories: Categories(categories),
-            patterns: Patterns(patterns),
-            ruleset: Ruleset(ruleset) }
+            categories: categories.into(),
+            patterns: patterns.into(),
+            ruleset: ruleset.into() }
     }
     
     /// Creates an empty generator setting
