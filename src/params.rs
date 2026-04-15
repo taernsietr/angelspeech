@@ -19,7 +19,7 @@ impl TextParams {
         if text_size < 1 {
             println!("[Angelspeech] Warning: text size must be at least 1. Defaulting to 1.");
         }
-        if min_syllables <= 0 || max_syllables <= 0 {
+        if min_syllables == 0 || max_syllables == 0 {
             println!("[Angelspeech] Warning: Syllable values have to be greater than zero. Defaulting to 1.");
         }
         if min_syllables > max_syllables {

@@ -4,7 +4,7 @@
 
 #![allow(dead_code)]
 
-pub(crate) mod generator;
+pub(crate) mod category_based;
 pub(crate) mod mora;
 pub(crate) mod pattern;
 pub(crate) mod rules;

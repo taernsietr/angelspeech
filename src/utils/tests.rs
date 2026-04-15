@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
-    use crate::generator::{
+    use crate::category_based::{
         pattern::Pattern,
         text_generator::TextGenerator,
         simple_rules::Rule
