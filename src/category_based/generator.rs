@@ -19,11 +19,15 @@ impl TextGenerator {
     pub fn set_name<S: Into<String>>(&mut self, name: S) { self.name = name.into() }
 
     /// Creates a new generator setting
-    pub fn new(
+    pub fn new<
+        C: Into<Categories>,
+        P: Into<Patterns>,
+        R: Into<Ruleset>
+    >(
         name: impl Into<String>,
-        categories: impl Into<Categories>,
-        patterns: impl Into<Patterns>,
-        ruleset: impl Into<Ruleset>
+        categories: C,
+        patterns: P,
+        ruleset: R 
     ) -> TextGenerator {
         TextGenerator {
             name: name.into(),
