@@ -1,9 +1,12 @@
-use sqlx::{
-    Database, Decode, Encode, FromRow, Postgres, Row, Type,
-    encode::IsNull,
-    error::BoxDynError,
-    postgres::{PgArgumentBuffer, PgTypeInfo, PgRow}
-};
-
 use crate::types::*;
 
+/*
+impl sqlx::Encode<'_, sqlx::Postgres> for Categories {
+    fn encode_by_ref(&self, buf: &mut <sqlx::Postgres as sqlx::Database>::ArgumentBuffer<'_>,
+        ) -> Result<sqlx::encode::IsNull, sqlx::error::BoxDynError> {
+    }
+}
+
+impl sqlx::Decode<'a, sqlx::Postgres> for Categories {}
+
+*/
