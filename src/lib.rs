@@ -6,13 +6,10 @@
 
 pub(crate) mod category_based;
 pub(crate) mod mora;
-pub(crate) mod pattern;
-pub(crate) mod rules;
 pub(crate) mod utils;
 pub(crate) mod types;
 pub(crate) mod common;
 pub(crate) mod traits;
-pub(crate) mod params;
 
 pub mod prelude {
     pub use crate::types::{

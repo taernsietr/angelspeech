@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::path::PathBuf;
 use anyhow::Result;
 use thiserror::Error;
@@ -37,9 +36,9 @@ impl TextGenerator {
     pub fn empty<N: Into<String>>(name: N) -> TextGenerator {
         TextGenerator {
             name: name.into(), 
-            categories: Categories(HashMap::new()),
-            patterns: Patterns(Vec::<Pattern>::new()),
-            ruleset: Ruleset(Vec::<Rule>::new())
+            categories: Categories::empty(),
+            patterns: Patterns::empty(),
+            ruleset: Ruleset::empty()
         }
     }
 
