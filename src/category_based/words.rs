@@ -1,9 +1,9 @@
-use rand::{Rng, prelude::SliceRandom};
+use rand::{RngExt, prelude::IndexedRandom};
 use crate::types::{Pattern, TextParams, TextGenerator};
 
 impl TextGenerator {
     pub fn select_pattern(&self, index: u8, word_length: u8) -> &Pattern {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let positions = Pattern::valid_positions(index, word_length);
         self.patterns
             .iter()
@@ -17,7 +17,7 @@ impl TextGenerator {
     // TODO: rewrite aligning the syllable patterns first; should be easier to apply phonetic rules
     /// Generates a random word with a specific syllable count
     pub fn word(&self, syllables: u8) -> String {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         (1..=syllables).map(|index| {
             self.select_pattern(index, syllables).pattern().chars().map(|element| {
@@ -48,7 +48,7 @@ impl TextGenerator {
     /// Generates text with some recognizable structure, for simulating real text with generated
     /// words
     pub fn pseudotext(&self, params: &TextParams) -> String {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         let mut pseudotext = String::new();
         let roots: Vec<String> = (0..Ord::min(params.text_size/2, 12)).map(|_| self.text(params)).collect();
         let particles: Vec<String> = (0..Ord::min(params.text_size, 10)).map(|_| self.word(Ord::min(params.min_syllables, 2))).collect();
@@ -56,7 +56,7 @@ impl TextGenerator {
 
         let mut last_type = "none"; 
         for i in 0..=params.text_size {
-            let state = rng.gen_range(0..2);
+            let state = rng.random_range(0..2);
             pseudotext.push_str(
                 match (last_type, state) {
                     ("none", _) => { last_type = "root"; roots.choose(&mut rng).unwrap() },
@@ -67,7 +67,7 @@ impl TextGenerator {
                     (_, _) => unreachable!()
                 }
             );
-            if rng.gen_bool((i as f64 % 8.0) / 8.0) { pseudotext.push_str([", ", ". ", "? ", "! "].choose(&mut rng).unwrap()) }
+            if rng.random_bool((i as f64 % 8.0) / 8.0) { pseudotext.push_str([", ", ". ", "? ", "! "].choose(&mut rng).unwrap()) }
             else { pseudotext.push(' ') };
         };
         pseudotext

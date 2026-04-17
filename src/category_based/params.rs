@@ -1,5 +1,5 @@
 use std::cmp::max;
-use rand::Rng;
+use rand::RngExt;
 
 use crate::types::{
     TextParams,
@@ -42,17 +42,17 @@ impl TextParams {
 
     /// Generates a random syllable count based on its minimum and maximum values
     pub fn syllables(&self) -> u8 {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
         // used logic from https://stackoverflow.com/questions/29325069/how-to-generate-random-numbers-biased-towards-one-value-in-a-range
-        let mix = self.bias.abs() * rng.gen::<f32>();
+        let mix = self.bias.abs() * rng.random::<f32>();
         let bias_t = {
             if self.bias > 0.0 { self.max_syllables } 
             else if self.bias < 0.0 { self.min_syllables }
             else { 0 }
         };
 
-        let rnd = rng.gen_range(self.min_syllables..=self.max_syllables) as f32;
+        let rnd = rng.random_range(self.min_syllables..=self.max_syllables) as f32;
         (rnd * (1.0 - mix) + bias_t as f32 * mix) as u8
     }
 }

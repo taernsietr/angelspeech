@@ -2,8 +2,6 @@
 //! lists and pseudotext, and more advanced options such as 
 //! randomly generated phonologies.
 
-#![allow(dead_code)]
-
 pub(crate) mod category_based;
 pub(crate) mod mora;
 pub(crate) mod utils;

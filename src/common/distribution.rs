@@ -1,9 +1,9 @@
-use rand::{Rng, distributions::{Distribution, Standard}};
+use rand::{Rng, RngExt, distr::{Distribution, StandardUniform}};
 use crate::types::{PatternWeight,PatternPosition};
 
-impl Distribution<PatternWeight> for Standard {
+impl Distribution<PatternWeight> for StandardUniform {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> PatternWeight {
-        match rng.gen_range(1..100) {
+        match rng.random_range(1..100) {
             1..=70 => PatternWeight::Default,
             71..=85 => PatternWeight::Light,
             86..=100 => PatternWeight::Heavy,
@@ -12,9 +12,9 @@ impl Distribution<PatternWeight> for Standard {
     }
 }
 
-impl Distribution<PatternPosition> for Standard {
+impl Distribution<PatternPosition> for StandardUniform {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> PatternPosition {
-        match rng.gen_range(1..100) {
+        match rng.random_range(1..100) {
             1..=70 => PatternPosition::Any,
             71..=75 => PatternPosition::Initial,
             76..=80 => PatternPosition::Medial,
