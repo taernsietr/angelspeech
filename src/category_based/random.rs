@@ -25,11 +25,11 @@ impl TextGenerator {
         let size: u8 = rng.random_range(5..=30);
 
         let consonants = PULMONIC_CONSONANTS
-            .sample(&mut rng, ((ratio * size as f32) / (ratio + 1.0)).round() as usize)
+            .sample(&mut rng, ((ratio * size as f32) / (ratio + 1.0)).round().max(3.0) as usize)
             .map(|x| x.to_owned().to_string()).collect::<Vec<String>>();
 
         let vowels = VOWELS
-            .sample(&mut rng, (size as f32 / (ratio + 1.0)).round() as usize)
+            .sample(&mut rng, (size as f32 / (ratio + 1.0)).round().max(3.0) as usize)
             .map(|x| x.to_owned().to_string()).collect::<Vec<String>>();
 
         let no_consonant_cats = rng.random_range(1..=(consonants.len() as f32 / 3.0).round() as usize);

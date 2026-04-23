@@ -12,22 +12,22 @@ pub struct TextGenerator {
     pub ruleset: Ruleset
 } 
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(sqlx::Type, Debug, Clone, Serialize, Deserialize)]
 pub struct Categories(pub HashMap<String, Vec<String>>);
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(sqlx::Type, Debug, Clone, Serialize, Deserialize)]
 pub struct Patterns(pub Vec<Pattern>);
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(sqlx::Type, Debug, Clone, Serialize, Deserialize)]
 pub struct Ruleset(pub Vec<Rule>);
 
-#[derive(Clone, Deserialize, Serialize, Debug)]
+#[derive(sqlx::Type, Clone, Deserialize, Serialize, Debug)]
 pub struct Rule {
     pub context: String,
     pub result: String
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug)]
+#[derive(sqlx::Type, Deserialize, Serialize, Clone, Debug)]
 pub struct Pattern {
     pub pattern: String,
     pub position: PatternPosition,
@@ -42,7 +42,7 @@ pub struct TextParams {
     pub text_type: TextType
 }
 
-#[derive(Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(sqlx::Type, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
 pub enum PatternPosition {
     Any,
     Initial,
@@ -53,14 +53,14 @@ pub enum PatternPosition {
     NonFinal,
 }
 
-#[derive(Deserialize, Serialize, Clone, Copy, Debug)]
+#[derive(sqlx::Type, Deserialize, Serialize, Clone, Copy, Debug)]
 pub enum PatternWeight {
     Default,
     Light,
     Heavy,
 }
 
-#[derive(Deserialize, Clone)]
+#[derive(sqlx::Type, Deserialize, Clone)]
 pub enum TextType {
     GenericWord,
     GenericPseudotext
