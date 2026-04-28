@@ -2,14 +2,6 @@ use sqlx::postgres::PgRow;
 use sqlx::{Error, FromRow, Row};
 use crate::types::*;
 
-/*
-impl<'r, DB: sqlx::Database> sqlx::Decode<'r, DB> for TextGenerator {
-    fn decode(value: <DB as sqlx::Database>::ValueRef<'r>) -> Result<TextGenerator, sqlx::error::BoxDynError> {
-        todo!()
-    }
-}
-*/
-
 impl<'r> FromRow<'r, PgRow> for TextGenerator {
     fn from_row(row: &'r PgRow) -> Result<Self, Error> {
         let name: String = row.try_get("name")?;
