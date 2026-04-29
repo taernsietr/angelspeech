@@ -3,11 +3,10 @@
 //! randomly generated phonologies.
 
 pub(crate) mod category_based;
-pub(crate) mod mora;
-pub(crate) mod utils;
-pub(crate) mod types;
 pub(crate) mod common;
-pub(crate) mod traits;
+pub(crate) mod resources;
+pub(crate) mod types;
+pub(crate) mod utils;
 
 pub mod prelude {
     pub use crate::types::{
@@ -15,5 +14,4 @@ pub mod prelude {
         TextType,
         TextGenerator
     };
-    pub use crate::traits::IntoTextGenerator;
 }
