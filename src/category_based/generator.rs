@@ -11,6 +11,7 @@ pub enum TextGeneratorError {
     EmptyCategories,
 }
 
+// TODO: standardize error returns
 impl TextGenerator {
     /// Returns the name for the generator setting
     pub fn get_name(&self) -> String { self.name.clone() }

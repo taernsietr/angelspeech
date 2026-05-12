@@ -42,6 +42,17 @@ pub struct TextParams {
     pub text_type: TextType
 }
 
+pub struct IPAEntry {
+    pub ipa: String,
+    pub xsampa: String,
+    pub description: String,
+    pub attributes: Vec<IPAAttribute>
+}
+
+pub enum IPAAttribute {
+    Placeholder
+}
+
 #[derive(sqlx::Type, Deserialize, Serialize, Clone, Copy, PartialEq, Eq, Debug)]
 pub enum PatternPosition {
     Any,
